@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 import pytest
@@ -11,6 +12,8 @@ from src.phase_3_llm.service_llm_recommender import GroqChatClient
 
 
 def _require_live_env() -> None:
+    if os.getenv("RUN_LIVE_GROQ_TESTS", "").strip().lower() not in {"1", "true", "yes"}:
+        pytest.skip("RUN_LIVE_GROQ_TESTS is not enabled; skipping live integration tests.")
     if not settings.groq_api_key:
         pytest.skip("GROQ_API_KEY not set; skipping live integration test.")
     if not Path(settings.db_path).exists():

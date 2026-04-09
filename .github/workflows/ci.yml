@@ -29,3 +29,4 @@ jobs:
         run: pytest
         env:
           PYTHONPATH: ${{ github.workspace }}
+          GROQ_API_KEY: dummy_ci_key
