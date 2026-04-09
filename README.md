@@ -43,7 +43,7 @@ Artifacts generated:
 
 ## Deployment (Vercel + Streamlit / unified Docker)
 
-- **Vercel (frontend):** In the Vercel project, set the **root directory** to `web/`. Add build env **`VITE_API_BASE`** with the public URL of your Python backend (no trailing slash)—for example `https://your-service.fly.dev` when using the Docker image below. `web/vercel.json` configures SPA fallback routing for the Vite build.
+- **Vercel (frontend):** In the Vercel project, set the **root directory** to `web/`. Add build env **`VITE_API_BASE`** with the public URL of your Python backend (no trailing slash). Current value: `https://restaurantrecommendation-parth3.streamlit.app`. `web/vercel.json` configures SPA fallback routing for the Vite build.
 - **Streamlit Community Cloud:** Deploy `streamlit_app.py` from this repo. Add secrets (`GROQ_API_KEY`, optional `DB_PATH`) in the Streamlit dashboard. Commit or otherwise provide `restaurants.db` (or run ingestion in CI before deploy). **Note:** Streamlit Cloud only exposes the Streamlit process; it does **not** publish a separate public port for the FastAPI API, so the Vercel SPA still needs a host that serves `/health`, `/metadata/*`, and `POST /recommendations`.
 - **Recommended backend URL for the Vite client:** Build and run the **`Dockerfile`** on Fly.io, Railway, Render, or similar. It runs **nginx** on port **8080**: JSON routes go to **FastAPI**, everything else to **Streamlit**. Set **`CORS_ORIGIN_REGEX=`** `https://.*\.vercel\.app` (or list your production domain in **`CORS_EXTRA_ORIGINS`**) on the container so the browser can call the API from Vercel. Pass **`GROQ_API_KEY`** at runtime.
 
