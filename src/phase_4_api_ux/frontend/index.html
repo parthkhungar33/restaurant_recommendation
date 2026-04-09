@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Restaurant Recommender</title>
+    <link rel="stylesheet" href="/ui/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="header">
+        <h1>Restaurant Recommender</h1>
+        <p>Basic validation UI for end-to-end testing.</p>
+      </header>
+
+      <section class="card">
+        <form id="query-form" class="form-grid">
+          <label>
+            Location
+            <select id="location" required>
+              <option value="">Loading locations...</option>
+            </select>
+          </label>
+
+          <label>
+            Max Budget (for two)
+            <input id="max_budget" type="number" min="1" step="1" placeholder="e.g. 1200" />
+          </label>
+
+          <label>
+            Cuisine
+            <input id="cuisine" type="text" placeholder="e.g. Italian" />
+          </label>
+
+          <label>
+            Minimum Rating
+            <input id="min_rating" type="number" min="0" max="5" step="0.1" placeholder="e.g. 4.0" />
+          </label>
+
+          <label>
+            Additional Preferences
+            <select id="additional_preferences" multiple>
+              <option value="">Loading preferences...</option>
+            </select>
+          </label>
+
+          <label>
+            Limit
+            <input id="limit" type="number" min="1" max="20" value="5" />
+          </label>
+
+          <button id="submit-btn" type="submit">Get Recommendations</button>
+        </form>
+      </section>
+
+      <section id="meta" class="meta hidden"></section>
+      <section id="notes" class="notes hidden"></section>
+      <section id="results" class="results"></section>
+      <section id="error" class="error hidden"></section>
+    </main>
+
+    <script src="/ui/app.js"></script>
+  </body>
+  </html>

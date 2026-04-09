@@ -1,0 +1,25 @@
+{
+  "total_rows": 51717,
+  "required_field_completeness_pct": 100.0,
+  "null_counts": {
+    "locality": 21,
+    "avg_cost_for_two": 346,
+    "rating": 10052,
+    "votes": 0
+  },
+  "budget_band_distribution": {
+    "low": 37759,
+    "medium": 11833,
+    "high": 1779,
+    "unknown": 346
+  },
+  "rating_summary": {
+    "min": 1.85,
+    "max": 4.95,
+    "mean": 3.7504488179527176
+  },
+  "source_dataset": "ManikaSaini/zomato-restaurant-recommendation",
+  "ingest_version": "20260407101020",
+  "output_table": "restaurants_clean",
+  "output_db_path": "src\\phase_1_ingestion\\data\\restaurants.db"
+}

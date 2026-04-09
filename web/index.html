@@ -1,0 +1,298 @@
+<!doctype html>
+<html class="scroll-smooth" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Culinary Concierge</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-surface pb-24 text-on-surface md:pb-0">
+    <nav
+      class="font-headline fixed top-0 z-50 flex w-full items-center justify-between bg-surface px-6 py-4 antialiased"
+    >
+      <div class="text-2xl font-bold tracking-tight text-on-surface">The Culinary Concierge</div>
+      <div class="flex items-center gap-6">
+        <div class="hidden gap-8 text-on-surface opacity-70 md:flex">
+          <span class="rounded-lg px-3 py-2 transition-colors">Discover</span>
+        </div>
+        <button
+          type="button"
+          class="material-symbols-outlined rounded-full p-2 text-on-surface transition-all hover:bg-surface-container-low"
+          aria-label="Profile"
+        >
+          person
+        </button>
+      </div>
+    </nav>
+
+    <main class="flex min-h-screen pt-20">
+      <aside
+        class="font-body fixed left-0 z-40 ml-0 mt-4 flex h-[calc(100vh-80px)] w-full flex-col overflow-y-auto rounded-r-none bg-surface-container-low p-8 shadow-[0_12px_32px_rgba(57,56,52,0.06)] md:ml-4 md:w-[420px] md:rounded-r-xl md:leading-relaxed"
+        aria-label="Search filters"
+      >
+        <header class="mb-10">
+          <h1 class="headline text-3xl font-extrabold leading-tight text-on-surface">Table Concierge</h1>
+          <p class="mt-2 text-lg text-on-surface-variant">
+            <span id="city-label">Pick a locality to begin.</span>
+          </p>
+        </header>
+
+        <div class="space-y-12 pb-32">
+          <section>
+            <label class="headline mb-4 block text-xl font-bold" for="location-select"
+              >Where would you like to eat?</label
+            >
+            <div class="group relative">
+              <span
+                class="material-symbols-outlined pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant"
+                >search</span
+              >
+              <select
+                id="location-select"
+                class="w-full cursor-pointer appearance-none rounded-2xl border-2 border-transparent bg-white py-4 pl-12 pr-10 text-on-surface shadow-sm focus:border-primary focus:outline-none focus:ring-0"
+                required
+              >
+                <option value="">Loading areas...</option>
+              </select>
+              <span
+                class="material-symbols-outlined pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant"
+                >expand_more</span
+              >
+            </div>
+            <p id="location-feedback" class="mt-2 hidden text-sm font-medium text-error" role="alert">
+              Please choose an area to get recommendations.
+            </p>
+          </section>
+
+          <section>
+            <div class="mb-4 flex items-center justify-between gap-3">
+              <label class="headline text-xl font-bold">What&apos;s your budget like?</label>
+              <span
+                id="price-display"
+                class="headline shrink-0 rounded-lg bg-primary-container/20 px-3 py-1 text-sm font-bold text-primary md:text-base"
+                >₹2,000</span
+              >
+            </div>
+            <div class="px-2">
+              <input
+                id="max-budget-slider"
+                type="range"
+                class="accent-primary h-2 w-full cursor-pointer appearance-none rounded-lg bg-surface-container-highest"
+                min="200"
+                max="5000"
+                step="50"
+                value="2000"
+              />
+              <div
+                class="mt-2 flex justify-between text-xs font-medium uppercase tracking-wider text-on-surface-variant"
+              >
+                <span>₹200</span>
+                <span>₹5,000+</span>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <span class="headline mb-4 block text-xl font-bold">What are you in the mood for?</span>
+            <div id="cuisine-chips" class="grid grid-cols-2 gap-3" aria-label="Cuisine tags"></div>
+            <label class="sr-only" for="cuisine-extra">Additional cuisine</label>
+            <input
+              id="cuisine-extra"
+              type="text"
+              class="mt-4 w-full rounded-2xl border-2 border-transparent bg-white px-4 py-3 text-on-surface shadow-sm transition-all placeholder:text-on-surface-variant focus:border-primary focus:outline-none"
+              placeholder="Add cuisine (optional)"
+              autocomplete="off"
+            />
+          </section>
+
+          <section>
+            <span class="headline mb-4 block text-xl font-bold">How good should it be?</span>
+            <div id="rating-pills" class="flex flex-wrap gap-3" role="group" aria-label="Minimum rating"></div>
+          </section>
+
+          <section>
+            <span class="headline mb-4 block text-xl font-bold">What kind of experience?</span>
+            <div id="mood-tiles" class="grid grid-cols-2 gap-4"></div>
+            <div id="preference-options" class="hidden" aria-hidden="true"></div>
+          </section>
+
+          <section>
+            <label class="headline mb-4 block text-xl font-bold" for="preference-extra">Preferences</label>
+            <div class="relative">
+              <input
+                id="preference-extra"
+                type="text"
+                class="w-full rounded-3xl border-none bg-surface-container-high p-6 text-lg transition-all placeholder:text-on-surface-variant focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="Anything else? e.g. pet friendly, quiet corner…"
+                autocomplete="off"
+              />
+              <button
+                type="button"
+                class="pointer-events-none absolute right-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-primary text-white opacity-60"
+                aria-hidden="true"
+                tabindex="-1"
+              >
+                <span class="material-symbols-outlined">mic</span>
+              </button>
+            </div>
+          </section>
+        </div>
+
+        <div class="sticky bottom-0 left-0 right-0 bg-surface-container-low/80 pb-2 pt-6 backdrop-blur-md">
+          <div class="mb-3 flex justify-end">
+            <button
+              type="button"
+              id="reset-filters"
+              class="headline text-sm font-semibold text-primary underline-offset-4 hover:underline"
+            >
+              Reset filters
+            </button>
+          </div>
+          <button
+            type="button"
+            id="submit-search"
+            class="headline w-full rounded-full bg-primary-gradient py-6 text-xl font-bold text-white shadow-xl transition-all hover:scale-[1.02] active:scale-95"
+          >
+            Show me great places 🍽️
+          </button>
+        </div>
+      </aside>
+
+      <section class="ml-0 flex-1 px-6 py-10 md:ml-[440px] md:px-16 md:py-12">
+        <div id="view-hero" class="mx-auto max-w-4xl space-y-10 py-8 md:py-12">
+          <div class="rounded-3xl bg-surface-container-low p-8 shadow-sm md:p-12">
+            <p class="headline mb-3 flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-primary">
+              <span class="material-symbols-outlined text-base">auto_awesome</span>
+              AI-powered discovery
+            </p>
+            <h2 class="headline mb-6 text-4xl font-extrabold leading-tight text-on-surface md:text-5xl">
+              Tonight&apos;s table, <span class="text-primary">nailed</span>.
+            </h2>
+            <p class="mb-8 text-lg text-on-surface-variant" id="hero-city-tease">
+              Pick an area on the left, tune budget and cravings, then tap <strong>Show me great places</strong> for a
+              shortlist that fits your night out.
+            </p>
+            <div class="flex flex-wrap gap-3">
+              <span
+                class="rounded-full bg-white px-4 py-2 text-sm font-medium text-on-surface shadow-sm ring-1 ring-outline-variant/20"
+                >Instant shortlists</span
+              >
+              <span
+                class="rounded-full bg-white px-4 py-2 text-sm font-medium text-on-surface shadow-sm ring-1 ring-outline-variant/20"
+                >Plain-English &ldquo;why this place&rdquo;</span
+              >
+              <span
+                class="rounded-full bg-secondary-container px-4 py-2 text-sm font-bold text-on-secondary-container shadow-sm"
+                >Your rules, our AI</span
+              >
+            </div>
+            <p class="mt-8 text-sm text-on-surface-variant">
+              <span class="font-medium text-primary">←</span> Start in the concierge panel — it takes less than a
+              minute.
+            </p>
+          </div>
+        </div>
+
+        <div id="view-loading" class="mx-auto hidden max-w-4xl py-12" aria-live="polite">
+          <div class="mb-10 text-center">
+            <div
+              class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-secondary-container text-2xl"
+              aria-hidden="true"
+            >
+              🍽️
+            </div>
+            <h2 class="headline text-3xl font-extrabold text-on-surface">Finding the best places for you…</h2>
+            <p id="loading-message" class="mt-3 text-on-surface-variant">Our digital concierge is on it.</p>
+          </div>
+          <div id="skeleton-grid" class="space-y-6"></div>
+        </div>
+
+        <div id="view-results" class="mx-auto hidden max-w-4xl space-y-10 py-8 md:py-12">
+          <div class="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <div class="flex flex-wrap items-center gap-3">
+                <h2 id="results-title" class="headline text-3xl font-extrabold text-on-surface md:text-4xl">
+                  Top picks for you
+                </h2>
+                <span
+                  id="results-badge"
+                  class="headline hidden rounded-full bg-secondary-container px-4 py-2 text-sm font-bold uppercase tracking-wide text-on-secondary-container"
+                ></span>
+              </div>
+              <p id="results-count" class="mt-2 text-on-surface-variant"></p>
+            </div>
+            <label class="flex flex-col gap-1">
+              <span class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Sort</span>
+              <select
+                id="sort-select"
+                class="headline cursor-pointer rounded-2xl border-2 border-transparent bg-white px-4 py-3 text-on-surface shadow-sm focus:border-primary focus:outline-none"
+              >
+                <option value="recommended">Recommended</option>
+                <option value="rating">Highest rated</option>
+                <option value="cost-asc">Price: low to high</option>
+                <option value="cost-desc">Price: high to low</option>
+              </select>
+            </label>
+          </div>
+
+          <div id="filter-chip-bar" class="flex flex-wrap gap-2" aria-label="Active filters"></div>
+
+          <div
+            id="ai-banner"
+            class="hidden rounded-2xl bg-secondary-container/80 p-4 text-sm font-medium text-on-secondary-container"
+            role="status"
+          ></div>
+          <div id="notes-row" class="hidden rounded-2xl bg-surface-container p-4 text-sm text-on-surface-variant"></div>
+          <div id="error-row" class="hidden rounded-2xl bg-error-container/15 p-4 text-sm font-medium text-error"></div>
+
+          <div id="results-grid" class="space-y-16"></div>
+
+          <div class="flex flex-col items-center gap-4 pb-16 pt-6">
+            <p class="text-on-surface-variant">Want a fresh pass with the same filters?</p>
+            <button
+              type="button"
+              class="headline inline-flex items-center gap-2 rounded-full bg-surface-container-highest px-8 py-4 font-bold text-primary shadow-md transition-all hover:bg-primary-container hover:text-on-primary-container"
+              id="refresh-recommendations"
+            >
+              <span class="material-symbols-outlined">refresh</span>
+              Refresh recommendations
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <nav
+      class="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around bg-white px-6 py-4 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] md:hidden"
+      aria-label="Mobile"
+    >
+      <span class="flex flex-col items-center gap-1 text-primary">
+        <span class="material-symbols-outlined fill">restaurant</span>
+        <span class="text-[10px] font-bold">DISCOVER</span>
+      </span>
+      <span class="flex flex-col items-center gap-1 text-on-surface-variant opacity-60">
+        <span class="material-symbols-outlined">favorite</span>
+        <span class="text-[10px] font-bold">SAVED</span>
+      </span>
+      <span class="flex flex-col items-center gap-1 text-on-surface-variant opacity-60">
+        <span class="material-symbols-outlined">confirmation_number</span>
+        <span class="text-[10px] font-bold">BOOKINGS</span>
+      </span>
+      <span class="flex flex-col items-center gap-1 text-on-surface-variant opacity-60">
+        <span class="material-symbols-outlined">person</span>
+        <span class="text-[10px] font-bold">PROFILE</span>
+      </span>
+    </nav>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

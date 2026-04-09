@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Culinary Concierge</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Be_Vietnam_Pro:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error": "#ffffff",
+                    "outline": "#82807b",
+                    "primary-dim": "#973c00",
+                    "tertiary": "#8c5900",
+                    "on-secondary-fixed": "#6a100d",
+                    "tertiary-container": "#feb246",
+                    "inverse-surface": "#0f0e0b",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-fixed-variant": "#4f1c00",
+                    "on-tertiary-container": "#563500",
+                    "surface": "#fffbff",
+                    "error": "#be2d06",
+                    "error-container": "#f95630",
+                    "on-surface-variant": "#666460",
+                    "tertiary-fixed": "#feb246",
+                    "on-primary-fixed": "#000000",
+                    "inverse-on-surface": "#9f9d97",
+                    "outline-variant": "#bcb9b3",
+                    "secondary-container": "#ffc3bc",
+                    "surface-container-highest": "#ebe8e0",
+                    "secondary-fixed": "#ffc3bc",
+                    "on-error-container": "#520c00",
+                    "surface-dim": "#e6e2da",
+                    "on-primary": "#ffffff",
+                    "surface-container-low": "#fdf9f2",
+                    "on-tertiary": "#ffffff",
+                    "surface-variant": "#ebe8e0",
+                    "secondary-dim": "#9c352c",
+                    "on-primary-container": "#401500",
+                    "tertiary-fixed-dim": "#eea439",
+                    "primary-fixed": "#ff7a2f",
+                    "on-surface": "#393834",
+                    "background": "#fffbff",
+                    "secondary-fixed-dim": "#ffb0a6",
+                    "on-tertiary-fixed-variant": "#623d00",
+                    "secondary": "#ac4137",
+                    "on-background": "#393834",
+                    "surface-container": "#f7f3ec",
+                    "primary-container": "#ff7a2f",
+                    "on-secondary-fixed-variant": "#922d26",
+                    "on-tertiary-fixed": "#3a2300",
+                    "surface-tint": "#aa4500",
+                    "primary": "#aa4500",
+                    "inverse-primary": "#fe6b00",
+                    "surface-bright": "#fffbff",
+                    "on-secondary": "#ffffff",
+                    "surface-container-high": "#f1ede6",
+                    "error-dim": "#b92902",
+                    "primary-fixed-dim": "#f66700",
+                    "on-secondary-container": "#85241d",
+                    "tertiary-dim": "#7c4f00"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Plus Jakarta Sans"],
+                    "body": ["Be Vietnam Pro"],
+                    "label": ["Plus Jakarta Sans"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; background-color: #fffbff; color: #393834; }
+        .headline { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .bg-primary-gradient { background: linear-gradient(135deg, #aa4500 0%, #ff7a2f 100%); }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #aa4500;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(170, 69, 0, 0.3);
+            border: 3px solid white;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- Top Navigation Bar -->
+<nav class="bg-[#fffbff] dark:bg-slate-950 font-['Plus_Jakarta_Sans'] antialiased flex justify-between items-center w-full px-6 py-4 mx-auto fixed top-0 z-50">
+<div class="text-2xl font-bold text-[#393834] dark:text-[#fdf9f2] tracking-tight">The Culinary Concierge</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-8 text-[#393834] dark:text-[#fdf9f2] opacity-70">
+<a class="hover:bg-[#fdf9f2] dark:hover:bg-slate-900 transition-colors px-3 py-2 rounded-lg" href="#">Home</a>
+</div>
+<button class="material-symbols-outlined text-[#393834] dark:text-[#fdf9f2] p-2 hover:bg-[#fdf9f2] rounded-full transition-all">person</button>
+</div>
+</nav>
+<main class="flex min-h-screen pt-20">
+<!-- Left Panel: Interactive Assistant -->
+<aside class="fixed left-0 w-full md:w-[420px] bg-[#fdf9f2] dark:bg-slate-900 h-[calc(100vh-80px)] mt-4 ml-0 md:ml-4 rounded-r-none md:rounded-r-[3rem] flex flex-col p-8 overflow-y-auto z-40 shadow-[0_12px_32px_rgba(57,56,52,0.06)] font-['Be_Vietnam_Pro'] leading-relaxed">
+<header class="mb-10">
+<h1 class="text-3xl font-extrabold text-[#393834] dark:text-[#fdf9f2] headline leading-tight">Table Concierge</h1>
+<p class="text-on-surface-variant mt-2 text-lg">Crafting your Bangalore dining experience.</p>
+</header>
+<div class="space-y-12 pb-32">
+<!-- Step 1: Locality -->
+<section>
+<label class="block text-xl font-bold headline mb-4" for="locality-select">Where would you like to eat?</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">search</span>
+<select class="w-full pl-12 pr-6 py-4 bg-white rounded-2xl border-2 border-transparent focus:border-primary focus:ring-0 appearance-none shadow-sm text-on-surface cursor-pointer" id="locality-select">
+<option value="">Select a locality...</option>
+<option value="indiranagar">Indiranagar</option>
+<option value="koramangala">Koramangala</option>
+<option value="whitefield">Whitefield</option>
+<option value="lavelle-road">Lavelle Road</option>
+<option value="hsr-layout">HSR Layout</option>
+<option value="jayanagar">Jayanagar</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</section>
+<!-- Step 2: Budget -->
+<section>
+<div class="flex items-center justify-between mb-4">
+<label class="text-xl font-bold headline">What's your budget like?</label>
+<span class="font-bold text-primary bg-primary-container/20 px-3 py-1 rounded-lg" id="budget-label">₹500 - ₹5000+</span>
+</div>
+<div class="px-2">
+<input class="w-full h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" max="10000" min="500" oninput="document.getElementById('budget-label').innerText = '₹500 - ₹' + this.value + (this.value == 10000 ? '+' : '')" step="500" type="range" value="5000"/>
+<div class="flex justify-between mt-2 text-xs font-medium text-on-surface-variant uppercase tracking-wider">
+<span>₹500</span>
+<span>₹10,000+</span>
+</div>
+</div>
+</section>
+<!-- Step 3: Cuisine (Multi-select) -->
+<section>
+<label class="block text-xl font-bold headline mb-4">What are you in the mood for?</label>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex items-center gap-3 p-4 bg-white border-2 border-primary text-primary rounded-2xl transition-all shadow-sm ring-2 ring-primary/10">
+<span class="material-symbols-outlined fill" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+<span class="font-bold">Indian</span>
+<span class="material-symbols-outlined ml-auto text-sm">check_circle</span>
+</button>
+<button class="flex items-center gap-3 p-4 bg-white border-2 border-transparent hover:border-primary-container rounded-2xl transition-all">
+<span class="material-symbols-outlined text-primary">ramen_dining</span>
+<span class="font-medium text-on-surface-variant">Chinese</span>
+</button>
+<button class="flex items-center gap-3 p-4 bg-white border-2 border-primary text-primary rounded-2xl transition-all shadow-sm ring-2 ring-primary/10">
+<span class="material-symbols-outlined fill" style="font-variation-settings: 'FILL' 1;">bakery_dining</span>
+<span class="font-bold">Italian</span>
+<span class="material-symbols-outlined ml-auto text-sm">check_circle</span>
+</button>
+<button class="flex items-center gap-3 p-4 bg-white border-2 border-transparent hover:border-primary-container rounded-2xl transition-all">
+<span class="material-symbols-outlined text-primary">fastfood</span>
+<span class="font-medium text-on-surface-variant">Fast Food</span>
+</button>
+</div>
+</section>
+<!-- Step 4: Rating -->
+<section>
+<label class="block text-xl font-bold headline mb-4">How good should it be?</label>
+<div class="flex gap-4">
+<button class="flex-1 py-3 rounded-xl bg-white border-2 border-transparent hover:border-primary font-bold">3+</button>
+<button class="flex-1 py-3 rounded-xl bg-white border-2 border-transparent hover:border-primary font-bold">4+</button>
+<button class="flex-1 py-3 rounded-xl bg-primary-container text-on-primary-container font-bold shadow-md scale-105 border-2 border-primary/20">4.5+</button>
+</div>
+</section>
+<!-- Step 5: Mood -->
+<section>
+<label class="block text-xl font-bold headline mb-4">What kind of experience?</label>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-6 bg-white rounded-3xl text-center hover:bg-secondary-container transition-colors cursor-pointer group">
+<span class="text-3xl block mb-2 group-hover:scale-125 transition-transform">👨‍👩‍👧‍👦</span>
+<span class="font-medium">Family Time</span>
+</div>
+<div class="p-6 bg-white rounded-3xl text-center hover:bg-secondary-container transition-colors cursor-pointer group border-2 border-primary">
+<span class="text-3xl block mb-2 group-hover:scale-125 transition-transform">⚡</span>
+<span class="font-medium">Quick Bite</span>
+</div>
+<div class="p-6 bg-white rounded-3xl text-center hover:bg-secondary-container transition-colors cursor-pointer group">
+<span class="text-3xl block mb-2 group-hover:scale-125 transition-transform">🕯️</span>
+<span class="font-medium">Date Night</span>
+</div>
+<div class="p-6 bg-white rounded-3xl text-center hover:bg-secondary-container transition-colors cursor-pointer group">
+<span class="text-3xl block mb-2 group-hover:scale-125 transition-transform">🍃</span>
+<span class="font-medium">Chill Outdoors</span>
+</div>
+</div>
+</section>
+<!-- Step 6: Specifics -->
+<section>
+<label class="block text-xl font-bold headline mb-4">Preferences</label>
+<div class="relative">
+<input class="w-full p-6 bg-surface-container-high rounded-3xl border-none focus:ring-2 focus:ring-primary focus:bg-white transition-all text-lg" placeholder="Anything else? e.g. Pet friendly..." type="text"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-primary text-white rounded-full hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">mic</span>
+</button>
+</div>
+</section>
+</div>
+<!-- Bottom CTA -->
+<div class="sticky bottom-0 left-0 right-0 pt-6 pb-2 bg-[#fdf9f2]/80 backdrop-blur-md">
+<button class="w-full py-6 rounded-full bg-primary-gradient text-white text-xl font-bold headline shadow-xl hover:scale-[1.02] active:scale-95 transition-all">
+                    Show me great places 🍽️
+                </button>
+</div>
+</aside>
+<!-- Right Panel: Results -->
+<section class="flex-1 ml-0 md:ml-[440px] p-8 md:p-16">
+<!-- Results List -->
+<div class="max-w-4xl mx-auto space-y-16 py-12">
+<div class="flex items-center justify-between">
+<h2 class="text-4xl font-extrabold headline">Top Picks for You</h2>
+<span class="px-4 py-2 bg-secondary-container text-on-secondary-container rounded-full font-bold text-sm">3 RECOMMENDATIONS</span>
+</div>
+<!-- Restaurant Card 1 -->
+<div class="relative">
+<div class="grid md:grid-cols-2 gap-0 bg-surface-container-low rounded-xl overflow-hidden shadow-sm group">
+<div class="relative h-72 md:h-full">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Exterior of a vibrant craft brewery in Bangalore with brick walls industrial lighting and lush green plants" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0tDF4QPsOvGemffrl5wFBl5t0ID__h-GOUMZnNQoMFNQXT_x3WDnUKE0pCFsQYLGZaAiiS5Xn5EtWrDvp5-cSVMmzbOU5zuODq3WbpWFFw-8cmC1lM2xCai6PRRBJfZinf3FbrRIXaxVBqcGYdYATqgVGYYQfTPUt5ZE1XQRzpHyZm8ATG8hJdyO0tNyDK5cC6iqrv7lMhBCo8j7uKhb6FfNhOiT_vkBEGRAlmx34Fx4D3My5HjE7lyKpBAER1k6MJyhrFHuP664"/>
+<div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full flex items-center gap-2">
+<span class="material-symbols-outlined text-primary fill" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold">4.7</span>
+</div>
+</div>
+<div class="p-8 md:p-12 flex flex-col justify-center">
+<div class="flex gap-2 mb-4">
+<span class="text-xs font-bold tracking-widest uppercase text-primary">BREWERY • INDIRANAGAR</span>
+</div>
+<h3 class="text-3xl font-extrabold headline mb-2">Toit</h3>
+<p class="text-on-surface-variant text-lg mb-6">A legendary craft brewery with rustic charm and a wide selection of signature ales.</p>
+<div class="flex flex-wrap gap-4 mb-8">
+<div class="flex items-center gap-2 text-sm font-medium">
+<span class="material-symbols-outlined text-primary">currency_rupee</span>
+<span>Moderate</span>
+</div>
+<div class="flex items-center gap-2 text-sm font-medium">
+<span class="material-symbols-outlined text-primary">wine_bar</span>
+<span>Pub Grub, Pizza</span>
+</div>
+</div>
+<div class="bg-secondary-container p-6 rounded-3xl rounded-tl-none relative border-l-4 border-primary">
+<p class="italic text-on-secondary-container font-medium leading-relaxed">
+                                    "Perfect for a relaxed dinner in Indiranagar and fits your moderate budget nicely. The craft beer selection matches your profile!"
+                                </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Restaurant Card 2 (Asymmetric) -->
+<div class="relative pt-12">
+<div class="bg-surface-container-low rounded-xl p-8 md:p-12 shadow-sm border-t-8 border-primary-container">
+<div class="flex flex-col md:flex-row gap-12">
+<div class="w-full md:w-1/3 -mt-20 md:-mt-24">
+<div class="rounded-xl overflow-hidden shadow-2xl h-80 rotate-2 group hover:rotate-0 transition-all duration-500">
+<img class="w-full h-full object-cover" data-alt="Classic European fine dining restaurant interior with white tablecloths large windows and elegant chandeliers" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGna4Is9Q-mjIGJwBw1ezTRPon_fxSy_Y-f9lnApWjtwOhIBOKMsUCkww38GJigx6QstJ6iPKb2cf_GXMohapFZ_OLL_q1j4UynK9Tb4eBkmmAkav6Nv3kk4be4bkLoa_S5Q7epxagWRpYi7D7NjYD2D3xViYAiWXy5Uo6p2NHGGNJDorPOqptyEwTp8FawtNoGVCmDdw1eV4UA4XoqAMyzdActFW1hnAkLC74hqEQEa1qzMI-QzhDm0f1V_-sISxnDtcf2pdSPVw"/>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-4">
+<div>
+<span class="text-xs font-bold tracking-widest uppercase text-primary mb-2 block">FINE DINING • LAVELLE ROAD</span>
+<h3 class="text-3xl font-extrabold headline">Sunny's</h3>
+</div>
+<div class="flex items-center gap-1 bg-primary text-white px-4 py-2 rounded-full">
+<span class="font-bold">4.8</span>
+<span class="material-symbols-outlined text-sm">star</span>
+</div>
+</div>
+<p class="text-on-surface-variant text-lg mb-6">An institution in Bangalore's culinary scene, offering sophisticated Continental fare and impeccable service.</p>
+<div class="flex flex-wrap gap-4 mb-8">
+<div class="flex items-center gap-2 text-sm font-medium">
+<span class="material-symbols-outlined text-primary">diamond</span>
+<span>Premium</span>
+</div>
+<div class="flex items-center gap-2 text-sm font-medium">
+<span class="material-symbols-outlined text-primary">restaurant</span>
+<span>European, Continental</span>
+</div>
+</div>
+<div class="bg-white p-6 rounded-3xl shadow-sm border border-outline-variant/15">
+<div class="flex items-center gap-4 mb-2">
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+<span class="font-bold text-primary">AI Concierge Pick</span>
+</div>
+<p class="text-on-surface leading-relaxed">
+                                        For an elegant <strong>Continental</strong> experience, Sunny's remains the gold standard in Bangalore.
+                                    </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Restaurant Card 3 -->
+<div class="bg-surface-container rounded-xl overflow-hidden shadow-sm flex flex-col md:flex-row">
+<div class="md:w-2/5 h-64 md:h-auto">
+<img class="w-full h-full object-cover" data-alt="Modern rooftop bar and brewery with panoramic city views and stylish contemporary furniture in Bangalore" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHERzMmmC9Vxjmfw88kgXgYgoWVED1tT-0PMh-28HWru694q2sTelPpkUq-wgOOSXphz133oidQ-Af4npZ-fNDus4H9Tr1SD_DACXMpNueHLAaz80O8XjVaHbIhPY7VchlYmjLMD5_8NPPmDbRUeliPQWdI1OkKlZAO7LrFddWTds1w2H0SeufJ4wQiNLqBLCE7t41Gg3qQfNU40pUqgJNilchJhyqsk6xbLnKtd6wpNdq9PFvcM0jJUQDdhxiS1f45ACYEYHlM6U"/>
+</div>
+<div class="p-8 md:p-12 flex-1">
+<span class="text-xs font-bold tracking-widest uppercase text-primary mb-2 block">LOUNGE • MG ROAD</span>
+<h3 class="text-3xl font-extrabold headline mb-4">The Biere Club</h3>
+<p class="text-on-surface-variant text-lg mb-6">Bangalore's first craft brewery, known for its vibrant energy and consistent quality of artisanal beers.</p>
+<div class="grid grid-cols-2 gap-4 mb-8">
+<div class="flex items-center gap-2 bg-white p-3 rounded-xl">
+<span class="material-symbols-outlined text-primary">groups</span>
+<span class="text-sm font-medium">Great for groups</span>
+</div>
+<div class="flex items-center gap-2 bg-white p-3 rounded-xl">
+<span class="material-symbols-outlined text-primary">music_note</span>
+<span class="text-sm font-medium">Live Music</span>
+</div>
+</div>
+<div class="bg-secondary-container p-5 rounded-2xl">
+<p class="text-on-secondary-container font-medium text-sm">
+                                💡 Perfect for your "Quick Bite" selection if you're near the city center.
+                            </p>
+</div>
+</div>
+</div>
+<!-- Not Feeling It? Refresh Button -->
+<div class="flex flex-col items-center gap-6 pt-12 pb-24">
+<p class="text-on-surface-variant font-medium">Not feeling these options?</p>
+<button class="flex items-center gap-3 px-10 py-5 rounded-full bg-surface-container-highest text-primary font-bold headline hover:bg-primary-container hover:text-on-primary-container transition-all shadow-md">
+<span class="material-symbols-outlined">refresh</span>
+                        Refresh Recommendations
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-[0_-4px_20px_rgba(0,0,0,0.05)] px-6 py-4 flex justify-around items-center z-50">
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined fill" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+<span class="text-[10px] font-bold">DISCOVER</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant opacity-60">
+<span class="material-symbols-outlined">favorite</span>
+<span class="text-[10px] font-bold">SAVED</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant opacity-60">
+<span class="material-symbols-outlined">confirmation_number</span>
+<span class="text-[10px] font-bold">BOOKINGS</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant opacity-60">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-bold">PROFILE</span>
+</button>
+</nav>
+</body></html>

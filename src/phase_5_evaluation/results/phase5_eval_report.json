@@ -1,0 +1,103 @@
+{
+  "total_queries": 5,
+  "success_rate": 1.0,
+  "empty_result_rate": 0.4,
+  "fallback_note_rate": 0.0,
+  "deterministic_overlap_rate": 0.6,
+  "latency_ms": {
+    "p50": 763.51,
+    "p95": 2051.02,
+    "mean": 862.54
+  },
+  "scoring_summary_0_5": {
+    "relevance_mean": 5.0,
+    "explanation_mean": 3.67
+  },
+  "manual_review_required": true,
+  "rows": [
+    {
+      "query_index": 1,
+      "query": {
+        "location": "Bangalore",
+        "budget": "medium",
+        "cuisine": "Italian",
+        "min_rating": 4.0,
+        "limit": 3
+      },
+      "status_code": 200,
+      "latency_ms": 1419.04,
+      "top1_relevance_score_0_5": 5.0,
+      "top1_explanation_score_0_5": 4.0,
+      "top1_name": "The Pizza Bakery",
+      "result_count": 3,
+      "has_relaxed_filters_note": false,
+      "deterministic_overlap_count": 1
+    },
+    {
+      "query_index": 2,
+      "query": {
+        "location": "Bangalore",
+        "budget": "low",
+        "cuisine": "North Indian",
+        "min_rating": 3.8,
+        "limit": 3
+      },
+      "status_code": 200,
+      "latency_ms": 2051.02,
+      "top1_relevance_score_0_5": 5.0,
+      "top1_explanation_score_0_5": 4.0,
+      "top1_name": "eat.fit",
+      "result_count": 3,
+      "has_relaxed_filters_note": false,
+      "deterministic_overlap_count": 3
+    },
+    {
+      "query_index": 3,
+      "query": {
+        "location": "Bangalore",
+        "budget": "high",
+        "cuisine": "Japanese",
+        "min_rating": 4.2,
+        "limit": 3
+      },
+      "status_code": 200,
+      "latency_ms": 763.51,
+      "top1_relevance_score_0_5": 5.0,
+      "top1_explanation_score_0_5": 3.0,
+      "top1_name": "You Mee",
+      "result_count": 2,
+      "has_relaxed_filters_note": false,
+      "deterministic_overlap_count": 1
+    },
+    {
+      "query_index": 4,
+      "query": {
+        "location": "Mumbai",
+        "budget": "medium",
+        "cuisine": "Chinese",
+        "min_rating": 4.0,
+        "limit": 3
+      },
+      "status_code": 200,
+      "latency_ms": 35.86,
+      "result_count": 0,
+      "has_relaxed_filters_note": false,
+      "deterministic_overlap_count": 0
+    },
+    {
+      "query_index": 5,
+      "query": {
+        "location": "Mumbai",
+        "budget": "low",
+        "cuisine": "South Indian",
+        "min_rating": 3.5,
+        "limit": 3
+      },
+      "status_code": 200,
+      "latency_ms": 43.28,
+      "result_count": 0,
+      "has_relaxed_filters_note": false,
+      "deterministic_overlap_count": 0
+    }
+  ]
+}
