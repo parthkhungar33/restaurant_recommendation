@@ -1,68 +1,83 @@
 # Restaurant Recommender
 
-Phase 0 foundation for an AI-powered restaurant recommendation backend.
+AI-assisted restaurant discovery: users filter by city, budget, cuisine, rating, and mood-style preferences. The system combines **deterministic SQLite retrieval** (trustworthy, grounded candidates) with **Groq LLM re-ranking and short explanations** for the final shortlist.
 
-## Quickstart
+## Tech stack
+
+| Area | Stack |
+| ---- | ----- |
+| **API** | Python 3.11+, **FastAPI**, Pydantic, Uvicorn |
+| **Data** | **SQLite** (`restaurants_clean`), **Pandas**, Hugging Face **`datasets`** |
+| **LLM** | **Groq** (OpenAI-compatible chat completions), `httpx`; validation, retry, deterministic fallback |
+| **Primary UI** | **Vite 6** + vanilla JS/CSS — **Culinary Curator** SPA in `web/` |
+| **Alt UI** | Static HTML/JS served by FastAPI at `/` and `/ui/*`; optional **`streamlit_app.py`** |
+| **CI** | **GitHub Actions** — Ruff + pytest (see `.github/workflows/ci.yml`) |
+| **Deploy** | **Vercel** (frontend), **Render** (FastAPI via `render.yaml`); optional **Dockerfile** (nginx + API + Streamlit) |
+
+## Dataset (Hugging Face)
+
+- **Dataset:** [`ManikaSaini/zomato-restaurant-recommendation`](https://huggingface.co/datasets/ManikaSaini/zomato-restaurant-recommendation)
+- **Ingestion:** `python scripts/ingest_restaurants.py` → canonical table `restaurants_clean` and `quality_report.json` under `src/phase_1_ingestion/data/`.
+
+## LLM integration
+
+- **Endpoint:** `POST /recommendations` — retrieval expands the candidate pool, then the LLM ranks and adds `ai_explanation` per card.
+- **Config:** set `GROQ_API_KEY` in `.env` (local) or in your host’s environment (Render, etc.). See `.env.example`.
+- **Reliability:** JSON-shaped outputs are validated; invalid responses trigger a stricter retry, then a deterministic ordering + template-style fallback.
+
+## Deployment
+
+**Production pattern:** static SPA on **Vercel** + JSON API on **Render** (recommended).
+
+1. **Render:** New **Blueprint** from this repo → uses root **`render.yaml`**. Set secret **`GROQ_API_KEY`**. Verify JSON at `https://<render-service>/health` and `/metadata/locations`.
+2. **Vercel:** Project **root directory** = `web/`. Set **`VITE_API_BASE=https://<render-service>`** (no trailing slash). **Redeploy** after env changes so the build picks up the API URL.
+3. **CORS:** FastAPI reads **`CORS_EXTRA_ORIGINS`** and **`CORS_ORIGIN_REGEX`** (e.g. `https://.*\.vercel\.app` for previews). Defaults for Render are seeded in `render.yaml`.
+
+**Important:** The Vercel app must call a **FastAPI** base URL. A **Streamlit Cloud** URL alone serves HTML, not `/metadata/locations` JSON — use Streamlit for an optional separate UI, not as `VITE_API_BASE`.
+
+**Optional:** Run the repo **`Dockerfile`** on Fly/Railway/Render with **`GROQ_API_KEY`** and CORS env vars — nginx routes API paths to uvicorn and `/` to Streamlit.
+
+More detail: `docs/project_handoff.md`, `docs/architecture.md`.
+
+## Quickstart (local)
 
 1. Create and activate a virtual environment.
 2. Install dependencies:
    - `pip install -r requirements.txt`
 3. Copy env file:
-   - `copy .env.example .env` (Windows)
+   - `copy .env.example .env` (Windows) / `cp .env.example .env` (Unix)
    - set `GROQ_API_KEY` in `.env` for LLM ranking
 4. Run API:
-   - `uvicorn src.phase_2_retrieval.main:app --reload` (listens on `http://127.0.0.1:8000` by default)
-5. Run **Culinary Curator** UI (Node.js / Vite):
+   - `uvicorn src.phase_2_retrieval.main:app --reload` (default `http://127.0.0.1:8000`)
+5. Run **Culinary Curator** UI (Vite):
    - `cd web`
    - `npm install` (first time)
-   - `npm run dev` → open `http://localhost:5173`
-   - Vite proxies API routes to port 8000; set `VITE_API_PROXY_TARGET` in `web/.env.development` if needed (see `web/.env.example`).
-   - If cities do not load, start `uvicorn` first. The SPA probes `8000` / `8010` in dev to find a live API when `VITE_API_BASE` is unset.
-   - Mockups in `design/` are copied into `web/public/design/` automatically before `dev` / `build` (`npm run sync-design` runs manually).
+   - `npm run dev` → `http://localhost:5173`
+   - Vite proxies `/recommendations`, `/metadata`, `/health` to port 8000; override with `VITE_API_PROXY_TARGET` (see `web/.env.example`).
+   - If cities do not load, start `uvicorn` first. With `VITE_API_BASE` unset in dev, the SPA probes common local API ports.
+   - Mockups in `design/` copy to `web/public/design/` on `predev` / `prebuild`.
 6. Run checks:
    - `python -m ruff check .`
    - `python -m pytest`
 
 ## Phase 1 Ingestion
 
-Run data ingestion from Hugging Face and persist canonical data:
-
 - `python scripts/ingest_restaurants.py`
-- To dedupe an existing SQLite file in-place (same rules as ingestion, key = `name + location_city + locality`): `python scripts/dedupe_restaurants_db.py`
+- Dedupe in place: `python scripts/dedupe_restaurants_db.py`
 
-Artifacts generated:
-- SQLite DB: `src/phase_1_ingestion/data/restaurants.db` with table `restaurants_clean`
-- Data quality report: `src/phase_1_ingestion/data/quality_report.json`
+Artifacts:
+- SQLite: `src/phase_1_ingestion/data/restaurants.db` (`restaurants_clean`)
+- Quality report: `src/phase_1_ingestion/data/quality_report.json`
 
-## Phase 3 LLM Ranking
+## Phase 3 LLM ranking (API)
 
-- `POST /recommendations` runs deterministic retrieval + Groq LLM ranking/explanations.
-- `GET /metadata/locations` returns available cities for UI helper dropdowns.
-- Basic web UI (HTML/CSS/JS) is served at `/` for quick validation **without Node**.
-- Production build of the Vite app: `cd web && npm run build` → static files in `web/dist`.
-
-## Deployment (Vercel + Streamlit / unified Docker)
-
-- **Vercel (frontend):** In the Vercel project, set the **root directory** to `web/`. Add build env **`VITE_API_BASE`** with the public URL of your Python backend (no trailing slash). For Render, this should be your Render API URL (example: `https://restaurant-recommender-api.onrender.com`). `web/vercel.json` configures SPA fallback routing for the Vite build.
-- **Streamlit Community Cloud:** Deploy `streamlit_app.py` from this repo. Add secrets (`GROQ_API_KEY`, optional `DB_PATH`) in the Streamlit dashboard. Commit or otherwise provide `restaurants.db` (or run ingestion in CI before deploy). **Note:** Streamlit Cloud only exposes the Streamlit process; it does **not** publish a separate public port for the FastAPI API, so the Vercel SPA still needs a host that serves `/health`, `/metadata/*`, and `POST /recommendations`.
-- **Recommended backend URL for the Vite client:** Build and run the **`Dockerfile`** on Fly.io, Railway, Render, or similar. It runs **nginx** on port **8080**: JSON routes go to **FastAPI**, everything else to **Streamlit**. Set **`CORS_ORIGIN_REGEX=`** `https://.*\.vercel\.app` (or list your production domain in **`CORS_EXTRA_ORIGINS`**) on the container so the browser can call the API from Vercel. Pass **`GROQ_API_KEY`** at runtime.
-
-### Render quick setup (FastAPI backend for Vercel)
-
-1. In Render, create a **Web Service** from this repo and select **Blueprint** deploy (uses `render.yaml`).
-2. Set secret env var `GROQ_API_KEY` in Render (required).
-3. Wait for deploy, then verify:
-   - `https://<render-url>/health`
-   - `https://<render-url>/metadata/locations`
-4. In Vercel project env, set:
-   - `VITE_API_BASE=https://<render-url>`
-5. Redeploy Vercel so the frontend rebuild picks the new API base.
+- `POST /recommendations` — deterministic retrieval + Groq ranking/explanations.
+- `GET /metadata/locations` — cities + helper chips for the UI.
+- FastAPI also serves a minimal HTML UI at `/` (no Node required).
+- Production Vite build: `cd web && npm run build` → `web/dist`.
 
 ## Phase 5 Evaluation
 
-- Run evaluation report:
-  - `python scripts/run_phase5_evaluation.py`
-- Optional smaller run:
-  - `python scripts/run_phase5_evaluation.py --max-queries 10`
-- Output file:
-  - `src/phase_5_evaluation/results/phase5_eval_report.json`
+- `python scripts/run_phase5_evaluation.py`
+- Smaller run: `python scripts/run_phase5_evaluation.py --max-queries 10`
+- Output: `src/phase_5_evaluation/results/phase5_eval_report.json`
