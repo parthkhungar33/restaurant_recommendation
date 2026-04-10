@@ -14,7 +14,7 @@ This plan is structured for incremental implementation so each phase is testable
 - This is **not** a full-blown scale project in the current phase.
 - Target load for LLM calls is intentionally low: **20-30 API calls per minute**.
 - System design should optimize for clarity, correctness, and demo reliability over horizontal scale.
-- **Deployment target:** frontend on **Vercel** (`web/` + `VITE_API_BASE`); Python backend with **Streamlit** (`streamlit_app.py`) plus **FastAPI** JSON API. Use the repo **`Dockerfile`** (nginx + uvicorn + Streamlit on port 8080) so one URL serves both the API for Vercel and the Streamlit UI; Streamlit Community Cloud alone cannot expose FastAPI on a second public port. See `docs/project_handoff.md` §2 “Deployment architecture”.
+- **Deployment target (current):** **Vercel** hosts the Vite SPA (`web/`); set **`VITE_API_BASE`** to the public **FastAPI** origin. **Render** hosts FastAPI via `render.yaml` (Web Service: `uvicorn src.phase_2_retrieval.main:app`, health check `/health`). **Optional:** `streamlit_app.py` on Streamlit Community Cloud for a Streamlit-only UI; it does **not** replace the JSON API the Vercel app needs. **Optional:** repo **`Dockerfile`** (nginx + uvicorn + Streamlit) for a single URL that serves both API and Streamlit. Details: `docs/project_handoff.md` §2 “Deployment architecture”, root `render.yaml`, `README.md`.
 - Primary UX is a **Node.js (Vite) SPA** in `web/` styled from mockups in `design/`, calling the FastAPI backend. A minimal HTML UI remains at `/` for quick smoke tests without Node.
 
 ---
@@ -59,7 +59,8 @@ This plan is structured for incremental implementation so each phase is testable
 ### Frontend / Backend Integration
 - Local dev runs **two processes**: `uvicorn ... --reload` (default port 8000) and `npm run dev` in `web/` (port 5173).
 - Vite proxies `/recommendations`, `/metadata`, and `/health` to the API origin (override with `VITE_API_PROXY_TARGET` if the API is not on `127.0.0.1:8000`).
-- FastAPI enables **CORS** for `http://localhost:5173` and `http://127.0.0.1:5173` so the SPA can call the API during development; production builds can be served from the same host as the API or from a static host with CORS updated accordingly.
+- FastAPI enables **CORS** for local Vite origins (`localhost` / `127.0.0.1` on 5173 and 4173). For **production**, set **`CORS_EXTRA_ORIGINS`** (exact Vercel URL) and/or **`CORS_ORIGIN_REGEX`** (e.g. `https://.*\.vercel\.app`) on the API host so the browser can call Render from Vercel.
+- **Production split:** Vercel build must define **`VITE_API_BASE`** = Render (or other) FastAPI URL with **no trailing slash**. After changing env vars, **redeploy** Vercel so Vite embeds the new base.
 - Design artifacts live in `design/` at repo root; the web app syncs them into `web/public/design/` on each `dev`/`build` (see `README` quickstart).
 
 ---
@@ -401,4 +402,4 @@ Current MVP implementation has reached Phase 4; remaining work is Phase 5 valida
 3. Add prompt/parser regression tests for common failure cases.
 4. Capture p50/p95 latency and LLM error-rate metrics under target load (20-30 LLM calls/min).
 5. Run Phase 5 evaluation baselines; optionally harden prompts from findings.
-6. When deploying, either serve `web/dist` behind FastAPI/static hosting or split frontend/backend origins and tighten CORS + env for the Groq key.
+6. When deploying, use **`render.yaml`** for FastAPI on Render + Vercel for `web/`, or serve `web/dist` behind FastAPI, or use the **`Dockerfile`** unified stack; always set **`GROQ_API_KEY`** on the API host and **`VITE_API_BASE`** on Vercel, and tighten CORS for cross-origin browser calls.

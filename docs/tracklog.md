@@ -539,3 +539,21 @@ Keep entries concise, factual, and diff-oriented so regressions and fixes remain
 - **Improvement**
   - **Dual UI strategy**: rich **Culinary Curator** experience for demos (`web/`) while FastAPI **static** UI at `/` remains for zero-Node smoke tests.
   - Single source of truth for PNG mockups in `design/` with automated copy into `web/public/design/`.
+
+---
+
+## Step 19 - Production deploy: Render (FastAPI) + Vercel (SPA); docs alignment
+
+- **Did**
+  - Added **`render.yaml`** at repo root: Render Web Service running `uvicorn src.phase_2_retrieval.main:app` on `$PORT`, health check `/health`, env defaults (`APP_ENV`, `DB_PATH`, `CORS_ORIGIN_REGEX` for `*.vercel.app`), secret `GROQ_API_KEY`.
+  - Updated **`README.md`** with Render Blueprint steps and Vercel `VITE_API_BASE` wiring.
+  - Fixed **GitHub Actions** CI: `PYTHONPATH` for pytest, dummy `GROQ_API_KEY` for env diagnostic test, gated live Groq tests behind `RUN_LIVE_GROQ_TESTS`.
+  - Updated **`docs/architecture.md`**: MVP deployment = Vercel + Render FastAPI; optional Streamlit / Docker; production CORS and `VITE_API_BASE` notes; immediate-actions bullet for deploy.
+  - Updated **`docs/project_handoff.md`**: deployment table and checklist for Render + Vercel; explicit warning that Streamlit Cloud URL cannot substitute for `VITE_API_BASE`; troubleshooting for “no cities loaded”.
+- **Failed/Issue**
+  - Vercel SPA pointed at Streamlit URL: `/health` and `/metadata/locations` returned HTML → localities failed to load until `VITE_API_BASE` targeted FastAPI JSON host.
+  - CI initially failed: `ModuleNotFoundError: src` on runner; then live Groq tests ran with dummy key → `401`; addressed with `PYTHONPATH`, dummy key, and opt-in live tests.
+- **Success**
+  - Render deploy logs show uvicorn live and `/health` 200; FastAPI serves JSON API for the Vite client when `VITE_API_BASE` is set to the Render URL.
+- **Improvement**
+  - Single documented path for non-Docker production: **Blueprint + `render.yaml`**, secrets on Render, **redeploy Vercel** after API URL or env changes.

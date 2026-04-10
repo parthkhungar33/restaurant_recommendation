@@ -56,26 +56,24 @@ flowchart LR
 
 ### Deployment architecture
 
-Production keeps the **Vite SPA on Vercel** and the **Python stack (SQLite + retrieval + Groq) on Streamlit/FastAPI**, with one important hosting constraint:
+Production is a **split origin** setup: static frontend on Vercel, JSON API on a host that runs **FastAPI** (recommended: **Render**).
 
 | Layer | Platform | Role |
 | ----- | -------- | ---- |
-| **Frontend** | [Vercel](https://vercel.com/) | Static build from `web/` (`npm run build` → `web/dist`). `web/vercel.json` enables SPA routing. The browser calls the API using **`VITE_API_BASE`** (set in Vercel project env for build + runtime). |
-| **Backend (Streamlit)** | [Streamlit Community Cloud](https://streamlit.io/cloud) or Docker | **`streamlit_app.py`** is the Streamlit-native UI. It calls the same services as FastAPI (`build_recommendation_response`, `get_locations`, …). |
-| **Backend (JSON API for Vercel)** | Same repo: **FastAPI** (`src/phase_2_retrieval/main.py`) | Required for the SPA’s `fetch` calls. Must be reachable at the origin set in `VITE_API_BASE`. |
+| **Frontend** | [Vercel](https://vercel.com/) | Static build from `web/` (`npm run build` → `web/dist`). `web/vercel.json` enables SPA routing. The browser calls the API using **`VITE_API_BASE`** (Vercel project env; **redeploy** after changes so Vite picks it up). |
+| **Backend (JSON API)** | [Render](https://render.com/) (recommended) | **FastAPI** app: `src/phase_2_retrieval/main.py`. Blueprint: root **`render.yaml`** — start command `uvicorn src.phase_2_retrieval.main:app --host 0.0.0.0 --port $PORT`, health check **`/health`**. Serves `/health`, `/metadata/locations`, `POST /recommendations`, etc. as JSON. |
+| **Backend (optional Streamlit UI)** | [Streamlit Community Cloud](https://streamlit.io/cloud) | **`streamlit_app.py`** — same Python services as FastAPI, but the public Streamlit URL serves **HTML**, not those REST paths. **Do not** set `VITE_API_BASE` to a Streamlit-only URL if you expect the Vercel SPA to load cities. |
+| **Backend (optional unified image)** | Docker (Fly/Railway/Render, etc.) | Repo **`Dockerfile`**: nginx routes API paths to uvicorn and `/` to Streamlit — one public URL for both JSON API and Streamlit UI. |
 
-**Why Docker is the default “backend URL”**  
-[Streamlit Community Cloud](https://docs.streamlit.io/streamlit-community-cloud) only exposes the Streamlit app process to the internet. There is **no second public port** for FastAPI on the same Cloud deployment, so **`VITE_API_BASE` cannot point at a Streamlit-only URL** and still hit `/health`, `/metadata/locations`, and `POST /recommendations`.  
+**Why `VITE_API_BASE` must be FastAPI (e.g. Render), not Streamlit Cloud alone**  
+The SPA in `web/src/main.js` calls `GET /metadata/locations` and `POST /recommendations` and expects **JSON**. A normal Streamlit Cloud app URL returns **Streamlit HTML** for arbitrary paths, so locality loading fails with “could not load cities”.
 
-**Recommended production layout**
+**Recommended production checklist**
 
-1. **Vercel:** Root directory = `web/`. Set **`VITE_API_BASE`** to your backend service URL (no trailing slash), e.g. `https://your-app.fly.dev`.  
-2. **Backend:** Build and run the repo **`Dockerfile`**. It starts **nginx** on port **8080**: routes `/health`, `/metadata`, `/recommendations`, `/docs`, etc. to **uvicorn (FastAPI)**; all other paths to **Streamlit** (`streamlit_app.py`). One public URL serves **both** the JSON API (for Vercel) and the Streamlit UI (for browsers opening `/`).  
-3. **CORS:** On the container, set **`CORS_ORIGIN_REGEX`** to `https://.*\.vercel\.app` and/or **`CORS_EXTRA_ORIGINS`** to your production Vercel URL so the SPA origin is allowed. Local dev origins remain allowed in code.  
-4. **Secrets:** Pass **`GROQ_API_KEY`** (and optional **`DB_PATH`**) into the container. For Streamlit-only Cloud deploys, use **Streamlit secrets** (`GROQ_API_KEY`, optional `DB_PATH`) in `streamlit_app.py`.
-
-**Streamlit Cloud alone**  
-You can still deploy **`streamlit_app.py`** to Streamlit Cloud for demos or a Streamlit-only audience. The **Vercel SPA** then needs **`VITE_API_BASE`** pointing at **another** host that runs FastAPI (e.g. a small second service) or you accept using only the Docker combined image for the full split-frontend story.
+1. **Render:** New **Blueprint** from GitHub → applies **`render.yaml`**. Set secret **`GROQ_API_KEY`**. Confirm `https://<render-service>.onrender.com/health` and `/metadata/locations` return JSON.  
+2. **Vercel:** Project root **`web/`**. Set **`VITE_API_BASE=https://<render-service>.onrender.com`** (no trailing slash). Redeploy.  
+3. **CORS:** On Render, set **`CORS_ORIGIN_REGEX`** (e.g. `https://.*\.vercel\.app`) and/or **`CORS_EXTRA_ORIGINS`** (your exact Vercel production URL) if previews or custom domains need access. `render.yaml` seeds `CORS_ORIGIN_REGEX` for Vercel previews.  
+4. **SQLite:** Default **`DB_PATH`** in Render is `src/phase_1_ingestion/data/restaurants.db` (committed in repo). Override only if you relocate the file.
 
 ---
 
@@ -489,9 +487,11 @@ Important environment values:
 ## 11) Troubleshooting checklist
 
 ### "No cities loaded" on hero
-- Check backend is running (`GET /health` returns `ok`)
-- Verify proxy target / API base env values
-- Confirm CORS origin and backend port
+- Confirm **`VITE_API_BASE`** on Vercel points to **FastAPI** (e.g. Render URL), not a Streamlit app URL; open `https://<api-host>/metadata/locations` in the browser — it must be JSON, not HTML.
+- Check API is running (`GET /health` returns `{"status":"ok"}`)
+- After env changes on Vercel, **redeploy** the frontend build
+- Verify local dev proxy target / `VITE_API_PROXY_TARGET` when testing on localhost
+- If cross-origin, confirm CORS on the API (`CORS_EXTRA_ORIGINS` / `CORS_ORIGIN_REGEX`)
 
 ### Card image looks irrelevant or blank
 - Hard refresh browser (`Ctrl+F5`) to clear stale URL cache
