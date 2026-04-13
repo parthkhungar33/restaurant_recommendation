@@ -293,7 +293,7 @@ function setCuisineChipVisual(btn, label) {
   const check = btn.querySelector(".ci-check");
   const labelEl = btn.querySelector(".ci-label");
   const base =
-    "cuisine-chip flex w-full items-center gap-3 rounded-2xl border-2 p-4 text-left transition-all duration-200";
+    "cuisine-chip flex w-full items-center gap-2 rounded-2xl border-2 p-3 text-left transition-all duration-200 md:gap-3 md:p-4";
   if (on) {
     btn.className = `${base} scale-[1.02] border-primary/25 bg-primary-gradient font-bold text-white shadow-lg shadow-primary/20`;
     btn.setAttribute("aria-pressed", "true");
@@ -347,7 +347,7 @@ function initCuisineChips() {
 
 function syncRatingPillVisual(btn, active) {
   const base =
-    "rating-pill headline flex-1 rounded-xl border-2 px-3 py-3 text-sm font-bold transition-all duration-200 md:text-base";
+    "rating-pill headline min-w-[4.5rem] flex-1 rounded-xl border-2 px-2 py-2.5 text-xs font-bold transition-all duration-200 sm:px-3 sm:py-3 sm:text-sm md:text-base";
   const text = btn.querySelector(".rp-text");
   const icon = btn.querySelector(".rp-icon");
   if (active) {
@@ -395,7 +395,7 @@ function initRatingPills() {
 
 function setMoodTileVisual(tile, selected) {
   const base =
-    "mood-tile group relative flex flex-col items-center rounded-3xl border-2 p-6 text-center transition-all duration-200";
+    "mood-tile group relative flex flex-col items-center rounded-2xl border-2 p-4 text-center transition-all duration-200 sm:rounded-3xl sm:p-6 md:rounded-3xl";
   const emoji = tile.querySelector(".mood-emoji");
   const label = tile.querySelector(".mood-label");
   const check = tile.querySelector(".mood-check");
@@ -427,7 +427,7 @@ function initMoodTiles() {
     btn.dataset.pref = m.pref;
     btn.innerHTML = `
       <span class="material-symbols-outlined mood-check absolute right-3 top-3 text-base text-white opacity-0 transition-all duration-200">check_circle</span>
-      <span class="mood-emoji mb-2 block text-3xl transition-transform group-hover:scale-125">${m.emoji}</span>
+      <span class="mood-emoji mb-2 block text-2xl transition-transform group-hover:scale-110 sm:text-3xl sm:group-hover:scale-125">${m.emoji}</span>
       <span class="mood-label font-medium text-on-surface">${escapeHtml(m.label)}</span>
     `;
     btn.addEventListener("click", () => {
@@ -475,8 +475,8 @@ function updateCityPill() {
   const tease = document.getElementById("hero-city-tease");
   if (tease) {
     tease.innerHTML = loc
-      ? `Nice — we&apos;ll hunt for memorable meals in <strong>${escapeHtml(loc)}</strong> using the concierge panel. Hit <strong>Show me great places</strong> when you&apos;re ready.`
-      : `Pick an area on the left, tune budget and cravings, then tap <strong>Show me great places</strong> for a shortlist that fits your night out.`;
+      ? `Nice — we&apos;ll hunt for memorable meals in <strong>${escapeHtml(loc)}</strong>. Tune filters if you like, then tap <strong>Show me great places</strong> when you&apos;re ready.`
+      : `Pick an area, tune budget and cravings, then tap <strong>Show me great places</strong> for a shortlist that fits your night out.`;
   }
 }
 
@@ -686,7 +686,7 @@ function buildResultCard(item, data, index) {
   if (v === 0) {
     wrap.innerHTML = `
       <div class="group grid gap-0 overflow-hidden rounded-xl bg-surface-container-low shadow-sm md:grid-cols-2">
-        <div class="relative h-72 min-h-[18rem] md:h-full">
+        <div class="relative h-48 min-h-[12rem] sm:h-56 md:h-full md:min-h-[18rem]">
           <img src="${imgUrl}" alt="" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
           <div class="absolute left-4 top-4 flex items-center gap-2 rounded-full bg-white/90 px-4 py-2 backdrop-blur-md">
             <span class="material-symbols-outlined fill text-sm text-primary">star</span>
@@ -694,12 +694,12 @@ function buildResultCard(item, data, index) {
           </div>
           ${smart ? `<div class="absolute right-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-bold text-primary backdrop-blur-md">\u2728 Pick</div>` : ""}
         </div>
-        <div class="flex flex-col justify-center p-8 md:p-12">
+        <div class="flex flex-col justify-center p-5 sm:p-8 md:p-12">
           <div class="mb-2 flex flex-wrap gap-2">
             <span class="text-xs font-bold uppercase tracking-widest text-primary">${escapeHtml(tagline)}</span>
           </div>
           ${showSmart}
-          <h3 class="headline mb-2 text-3xl font-extrabold text-on-surface">${escapeHtml(name)}</h3>
+          <h3 class="headline mb-2 text-2xl font-extrabold text-on-surface sm:text-3xl">${escapeHtml(name)}</h3>
           <p class="mb-2 text-lg text-on-surface-variant">${escapeHtml((item.cuisine || "").split(",").slice(0, 2).join(" · ") || "Great dining.")}</p>
           ${tierRow}
           <div class="relative rounded-3xl rounded-tl-none border-l-4 border-primary bg-secondary-container p-6">
@@ -711,7 +711,7 @@ function buildResultCard(item, data, index) {
   } else if (v === 1) {
     wrap.classList.add("pt-8", "md:pt-12");
     wrap.innerHTML = `
-      <div class="rounded-xl border-t-8 border-primary-container bg-surface-container-low p-8 shadow-sm md:p-12">
+      <div class="rounded-xl border-t-8 border-primary-container bg-surface-container-low p-5 shadow-sm sm:p-8 md:p-12">
         <div class="flex flex-col gap-12 md:flex-row">
           <div class="w-full md:w-1/3 md:-mt-24">
             <div class="group h-80 overflow-hidden rounded-xl shadow-2xl transition-all duration-500 md:rotate-2 md:hover:rotate-0">
@@ -722,7 +722,7 @@ function buildResultCard(item, data, index) {
             <div class="mb-4 flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
               <div>
                 <span class="mb-2 block text-xs font-bold uppercase tracking-widest text-primary">${escapeHtml(tagline)}</span>
-                <h3 class="headline text-3xl font-extrabold text-on-surface">${escapeHtml(name)}</h3>
+                <h3 class="headline text-2xl font-extrabold text-on-surface sm:text-3xl">${escapeHtml(name)}</h3>
               </div>
               <div class="flex items-center gap-1 rounded-full bg-primary px-4 py-2 text-white">
                 <span class="font-bold">${escapeHtml(ratingLabel)}</span>
@@ -748,11 +748,11 @@ function buildResultCard(item, data, index) {
         <div class="h-64 md:h-auto md:w-2/5">
           <img src="${imgUrl}" alt="" class="h-full w-full object-cover" loading="lazy" />
         </div>
-        <div class="flex flex-1 flex-col p-8 md:p-12">
+        <div class="flex flex-1 flex-col p-5 sm:p-8 md:p-12">
           <span class="mb-2 block text-xs font-bold uppercase tracking-widest text-primary">${escapeHtml(tagline)}</span>
-          <h3 class="headline mb-4 text-3xl font-extrabold text-on-surface">${escapeHtml(name)}</h3>
+          <h3 class="headline mb-4 text-2xl font-extrabold text-on-surface sm:text-3xl">${escapeHtml(name)}</h3>
           <p class="mb-6 text-lg text-on-surface-variant">${escapeHtml(cuisineFirst)} \u2022 ${escapeHtml(costLine)}</p>
-          <div class="mb-6 grid grid-cols-2 gap-4">
+          <div class="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
             <div class="flex items-center gap-2 rounded-xl bg-white p-3 text-sm font-medium">
               <span class="material-symbols-outlined text-primary">groups</span>
               <span>Great for groups</span>

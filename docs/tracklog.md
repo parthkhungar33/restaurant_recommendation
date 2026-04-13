@@ -557,3 +557,29 @@ Keep entries concise, factual, and diff-oriented so regressions and fixes remain
   - Render deploy logs show uvicorn live and `/health` 200; FastAPI serves JSON API for the Vite client when `VITE_API_BASE` is set to the Render URL.
 - **Improvement**
   - Single documented path for non-Docker production: **Blueprint + `render.yaml`**, secrets on Render, **redeploy Vercel** after API URL or env changes.
+
+---
+
+## Step 20 - Mobile responsiveness + UI cleanup parity (web and mobile)
+
+- **Did**
+  - Updated `web/index.html` layout for device parity:
+    - mobile-first stacked flow (`main` as column on small screens, row on desktop)
+    - filter panel becomes in-flow section on mobile and fixed side panel on `md+`
+    - removed non-functional UI chrome (top-right profile button, discover strip, bottom mobile nav).
+  - Removed voice affordance from filters:
+    - deleted mic button/visual from preferences input and kept a single consistent text field.
+  - Refined mobile readability and spacing:
+    - responsive typography and paddings for hero, section titles, CTA block, loading/results areas
+    - cuisine/mood grids now collapse cleanly on narrow widths
+    - tuned result-card image heights and card internals for phone breakpoints.
+  - Updated `web/src/main.js` copy and component classes to avoid desktop-only wording ("left panel") and align chip/tile/card behavior across breakpoints.
+  - Added `overflow-x-hidden` in `web/src/styles.css` to prevent horizontal drift on small screens.
+- **Failed/Issue**
+  - No blocking issue during implementation; main issue was prior desktop-centric assumptions causing clutter and weak mobile fit.
+- **Success**
+  - `npm run build` in `web/` succeeds after changes.
+  - Web UI now presents the same core journey on desktop and mobile without fake/unused controls.
+- **Improvement**
+  - Reduced visual noise and removed non-working affordances, improving trust and clarity.
+  - Established a cleaner responsive baseline for future UI enhancements without separate mobile-only hacks.

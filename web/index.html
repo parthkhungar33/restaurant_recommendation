@@ -15,40 +15,30 @@
       rel="stylesheet"
     />
   </head>
-  <body class="bg-surface pb-24 text-on-surface md:pb-0">
+  <body class="bg-surface text-on-surface">
     <nav
-      class="font-headline fixed top-0 z-50 flex w-full items-center justify-between bg-surface px-6 py-4 antialiased"
+      class="font-headline fixed top-0 z-50 flex w-full items-center justify-between border-b border-outline-variant/10 bg-surface/95 px-4 py-3 backdrop-blur-sm antialiased md:px-6 md:py-4"
     >
-      <div class="text-2xl font-bold tracking-tight text-on-surface">The Culinary Concierge</div>
-      <div class="flex items-center gap-6">
-        <div class="hidden gap-8 text-on-surface opacity-70 md:flex">
-          <span class="rounded-lg px-3 py-2 transition-colors">Discover</span>
-        </div>
-        <button
-          type="button"
-          class="material-symbols-outlined rounded-full p-2 text-on-surface transition-all hover:bg-surface-container-low"
-          aria-label="Profile"
-        >
-          person
-        </button>
+      <div class="min-w-0 text-lg font-bold tracking-tight text-on-surface sm:text-xl md:text-2xl">
+        The Culinary Concierge
       </div>
     </nav>
 
-    <main class="flex min-h-screen pt-20">
+    <main class="flex min-h-screen flex-col pt-16 md:flex-row md:pt-20">
       <aside
-        class="font-body fixed left-0 z-40 ml-0 mt-4 flex h-[calc(100vh-80px)] w-full flex-col overflow-y-auto rounded-r-none bg-surface-container-low p-8 shadow-[0_12px_32px_rgba(57,56,52,0.06)] md:ml-4 md:w-[420px] md:rounded-r-xl md:leading-relaxed"
+        class="font-body relative z-30 w-full shrink-0 border-b border-outline-variant/15 bg-surface-container-low px-4 py-6 shadow-sm md:fixed md:left-4 md:top-20 md:z-40 md:mt-4 md:h-[calc(100vh-5.5rem)] md:w-[420px] md:overflow-y-auto md:rounded-r-xl md:border-0 md:px-8 md:py-8 md:shadow-[0_12px_32px_rgba(57,56,52,0.06)] md:leading-relaxed"
         aria-label="Search filters"
       >
-        <header class="mb-10">
-          <h1 class="headline text-3xl font-extrabold leading-tight text-on-surface">Table Concierge</h1>
-          <p class="mt-2 text-lg text-on-surface-variant">
+        <header class="mb-6 md:mb-10">
+          <h1 class="headline text-2xl font-extrabold leading-tight text-on-surface md:text-3xl">Table Concierge</h1>
+          <p class="mt-2 text-base text-on-surface-variant md:text-lg">
             <span id="city-label">Pick a locality to begin.</span>
           </p>
         </header>
 
-        <div class="space-y-12 pb-32">
+        <div class="space-y-8 pb-6 md:space-y-12 md:pb-32">
           <section>
-            <label class="headline mb-4 block text-xl font-bold" for="location-select"
+            <label class="headline mb-4 block text-lg font-bold md:text-xl" for="location-select"
               >Where would you like to eat?</label
             >
             <div class="group relative">
@@ -75,7 +65,7 @@
 
           <section>
             <div class="mb-4 flex items-center justify-between gap-3">
-              <label class="headline text-xl font-bold">What&apos;s your budget like?</label>
+              <label class="headline text-lg font-bold md:text-xl">What&apos;s your budget like?</label>
               <span
                 id="price-display"
                 class="headline shrink-0 rounded-lg bg-primary-container/20 px-3 py-1 text-sm font-bold text-primary md:text-base"
@@ -102,8 +92,8 @@
           </section>
 
           <section>
-            <span class="headline mb-4 block text-xl font-bold">What are you in the mood for?</span>
-            <div id="cuisine-chips" class="grid grid-cols-2 gap-3" aria-label="Cuisine tags"></div>
+            <span class="headline mb-4 block text-lg font-bold md:text-xl">What are you in the mood for?</span>
+            <div id="cuisine-chips" class="grid grid-cols-1 gap-3 sm:grid-cols-2" aria-label="Cuisine tags"></div>
             <label class="sr-only" for="cuisine-extra">Additional cuisine</label>
             <input
               id="cuisine-extra"
@@ -115,39 +105,31 @@
           </section>
 
           <section>
-            <span class="headline mb-4 block text-xl font-bold">How good should it be?</span>
+            <span class="headline mb-4 block text-lg font-bold md:text-xl">How good should it be?</span>
             <div id="rating-pills" class="flex flex-wrap gap-3" role="group" aria-label="Minimum rating"></div>
           </section>
 
           <section>
-            <span class="headline mb-4 block text-xl font-bold">What kind of experience?</span>
-            <div id="mood-tiles" class="grid grid-cols-2 gap-4"></div>
+            <span class="headline mb-4 block text-lg font-bold md:text-xl">What kind of experience?</span>
+            <div id="mood-tiles" class="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4"></div>
             <div id="preference-options" class="hidden" aria-hidden="true"></div>
           </section>
 
           <section>
-            <label class="headline mb-4 block text-xl font-bold" for="preference-extra">Preferences</label>
-            <div class="relative">
-              <input
-                id="preference-extra"
-                type="text"
-                class="w-full rounded-3xl border-none bg-surface-container-high p-6 text-lg transition-all placeholder:text-on-surface-variant focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="Anything else? e.g. pet friendly, quiet corner…"
-                autocomplete="off"
-              />
-              <button
-                type="button"
-                class="pointer-events-none absolute right-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-primary text-white opacity-60"
-                aria-hidden="true"
-                tabindex="-1"
-              >
-                <span class="material-symbols-outlined">mic</span>
-              </button>
-            </div>
+            <label class="headline mb-4 block text-lg font-bold md:text-xl" for="preference-extra">Preferences</label>
+            <input
+              id="preference-extra"
+              type="text"
+              class="w-full rounded-2xl border-2 border-transparent bg-white px-4 py-3 text-base text-on-surface shadow-sm transition-all placeholder:text-on-surface-variant focus:border-primary focus:outline-none focus:ring-0 md:rounded-3xl md:px-5 md:py-4 md:text-lg"
+              placeholder="Anything else? e.g. pet friendly, quiet corner…"
+              autocomplete="off"
+            />
           </section>
         </div>
 
-        <div class="sticky bottom-0 left-0 right-0 bg-surface-container-low/80 pb-2 pt-6 backdrop-blur-md">
+        <div
+          class="sticky bottom-0 left-0 right-0 border-t border-outline-variant/10 bg-surface-container-low/95 pb-2 pt-4 backdrop-blur-md md:border-0 md:bg-surface-container-low/80 md:pt-6"
+        >
           <div class="mb-3 flex justify-end">
             <button
               type="button"
@@ -160,26 +142,26 @@
           <button
             type="button"
             id="submit-search"
-            class="headline w-full rounded-full bg-primary-gradient py-6 text-xl font-bold text-white shadow-xl transition-all hover:scale-[1.02] active:scale-95"
+            class="headline w-full rounded-full bg-primary-gradient py-4 text-lg font-bold text-white shadow-xl transition-all hover:scale-[1.02] active:scale-95 md:py-6 md:text-xl"
           >
             Show me great places 🍽️
           </button>
         </div>
       </aside>
 
-      <section class="ml-0 flex-1 px-6 py-10 md:ml-[440px] md:px-16 md:py-12">
-        <div id="view-hero" class="mx-auto max-w-4xl space-y-10 py-8 md:py-12">
-          <div class="rounded-3xl bg-surface-container-low p-8 shadow-sm md:p-12">
-            <p class="headline mb-3 flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-primary">
+      <section class="min-w-0 flex-1 px-4 py-6 md:ml-[440px] md:px-16 md:py-12">
+        <div id="view-hero" class="mx-auto max-w-4xl space-y-6 py-4 md:space-y-10 md:py-12">
+          <div class="rounded-2xl bg-surface-container-low p-5 shadow-sm sm:rounded-3xl sm:p-8 md:p-12">
+            <p class="headline mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary sm:text-sm">
               <span class="material-symbols-outlined text-base">auto_awesome</span>
               AI-powered discovery
             </p>
-            <h2 class="headline mb-6 text-4xl font-extrabold leading-tight text-on-surface md:text-5xl">
+            <h2 class="headline mb-4 text-3xl font-extrabold leading-tight text-on-surface sm:mb-6 sm:text-4xl md:text-5xl">
               Tonight&apos;s table, <span class="text-primary">nailed</span>.
             </h2>
-            <p class="mb-8 text-lg text-on-surface-variant" id="hero-city-tease">
-              Pick an area on the left, tune budget and cravings, then tap <strong>Show me great places</strong> for a
-              shortlist that fits your night out.
+            <p class="mb-6 text-base text-on-surface-variant sm:mb-8 sm:text-lg" id="hero-city-tease">
+              Pick an area, tune budget and cravings, then tap <strong>Show me great places</strong> for a shortlist
+              that fits your night out.
             </p>
             <div class="flex flex-wrap gap-3">
               <span
@@ -195,14 +177,10 @@
                 >Your rules, our AI</span
               >
             </div>
-            <p class="mt-8 text-sm text-on-surface-variant">
-              <span class="font-medium text-primary">←</span> Start in the concierge panel — it takes less than a
-              minute.
-            </p>
           </div>
         </div>
 
-        <div id="view-loading" class="mx-auto hidden max-w-4xl py-12" aria-live="polite">
+        <div id="view-loading" class="mx-auto hidden max-w-4xl py-8 md:py-12" aria-live="polite">
           <div class="mb-10 text-center">
             <div
               class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-secondary-container text-2xl"
@@ -210,17 +188,17 @@
             >
               🍽️
             </div>
-            <h2 class="headline text-3xl font-extrabold text-on-surface">Finding the best places for you…</h2>
+            <h2 class="headline text-2xl font-extrabold text-on-surface sm:text-3xl">Finding the best places for you…</h2>
             <p id="loading-message" class="mt-3 text-on-surface-variant">Our digital concierge is on it.</p>
           </div>
           <div id="skeleton-grid" class="space-y-6"></div>
         </div>
 
-        <div id="view-results" class="mx-auto hidden max-w-4xl space-y-10 py-8 md:py-12">
+        <div id="view-results" class="mx-auto hidden max-w-4xl space-y-6 py-6 md:space-y-10 md:py-12">
           <div class="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <div class="flex flex-wrap items-center gap-3">
-                <h2 id="results-title" class="headline text-3xl font-extrabold text-on-surface md:text-4xl">
+                <h2 id="results-title" class="headline text-2xl font-extrabold text-on-surface sm:text-3xl md:text-4xl">
                   Top picks for you
                 </h2>
                 <span
@@ -256,7 +234,7 @@
 
           <div id="results-grid" class="space-y-16"></div>
 
-          <div class="flex flex-col items-center gap-4 pb-16 pt-6">
+          <div class="flex flex-col items-center gap-4 pb-8 pt-4 md:pb-16 md:pt-6">
             <p class="text-on-surface-variant">Want a fresh pass with the same filters?</p>
             <button
               type="button"
@@ -270,28 +248,6 @@
         </div>
       </section>
     </main>
-
-    <nav
-      class="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around bg-white px-6 py-4 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] md:hidden"
-      aria-label="Mobile"
-    >
-      <span class="flex flex-col items-center gap-1 text-primary">
-        <span class="material-symbols-outlined fill">restaurant</span>
-        <span class="text-[10px] font-bold">DISCOVER</span>
-      </span>
-      <span class="flex flex-col items-center gap-1 text-on-surface-variant opacity-60">
-        <span class="material-symbols-outlined">favorite</span>
-        <span class="text-[10px] font-bold">SAVED</span>
-      </span>
-      <span class="flex flex-col items-center gap-1 text-on-surface-variant opacity-60">
-        <span class="material-symbols-outlined">confirmation_number</span>
-        <span class="text-[10px] font-bold">BOOKINGS</span>
-      </span>
-      <span class="flex flex-col items-center gap-1 text-on-surface-variant opacity-60">
-        <span class="material-symbols-outlined">person</span>
-        <span class="text-[10px] font-bold">PROFILE</span>
-      </span>
-    </nav>
 
     <script type="module" src="/src/main.js"></script>
   </body>

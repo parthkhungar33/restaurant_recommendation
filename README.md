@@ -2,6 +2,14 @@
 
 AI-assisted restaurant discovery: users filter by city, budget, cuisine, rating, and mood-style preferences. The system combines **deterministic SQLite retrieval** (trustworthy, grounded candidates) with **Groq LLM re-ranking and short explanations** for the final shortlist.
 
+## Latest progress
+
+- Improved responsive behavior for the Vite SPA (`web/`) so mobile and desktop share the same core UX flow.
+- Removed non-functional UI elements (profile button, fake discover strip, mobile bottom nav) to keep the experience clean and consistent.
+- Removed the voice/mic affordance from preferences and simplified the input UI.
+- Tightened mobile spacing, typography, card layouts, and grid behavior; added `overflow-x-hidden` to reduce narrow-screen overflow.
+- Build verified after the UI updates: `cd web && npm run build`.
+
 ## Tech stack
 
 | Area | Stack |
