@@ -79,6 +79,8 @@ The SPA in `web/src/main.js` calls `GET /metadata/locations` and `POST /recommen
 
 ## 3) Codebase map for onboarding
 
+**Graphify workflow note:** for architecture-impacting changes (cross-module refactors, API contract shifts, dependency rewires), review `graphify-out/GRAPH_REPORT.md` before implementation to identify impacted nodes/communities.
+
 ### Backend
 - Streamlit entrypoint: `streamlit_app.py` (deploy on Streamlit Community Cloud or behind nginx in Docker)
 - App entrypoint: `src/phase_2_retrieval/main.py`
@@ -533,3 +535,59 @@ Important environment values:
 4. `src/phase_1_ingestion/data_ingestion.py` (data quality and table construction)
 
 This sequence gives the fastest path from product behavior to implementation details.
+
+---
+
+## 14) Knowledge graph (graphify)
+
+A persistent knowledge graph of the codebase lives in `graphify-out/`.
+
+### What it is
+
+The graph was built by running `/graphify .` — it extracted 357 nodes and 480 edges from all 62 source files (code, docs, and UI screenshots) and clustered them into 50 named communities. It is **not** just an index: it stores relationships (calls, implements, references, rationale_for, semantically_similar_to) with confidence scores and source locations.
+
+### Why it helps onboarding
+
+Instead of reading every file to understand where something lives, you can query the graph:
+
+```bash
+# Where does AppliedFilters come from and what uses it?
+/graphify query "AppliedFilters"
+
+# How does data flow from ingestion to the LLM layer?
+/graphify path "data_ingestion" "GroqChatClient"
+
+# What is the deduplication strategy?
+/graphify explain "Three-Layer Deduplication Strategy"
+```
+
+Average query needs ~1,834 tokens instead of reading the full ~127k-token corpus — **69x cheaper** per codebase question.
+
+### Key findings from the graph
+
+**God nodes** (most connected — touch everything):
+- `normalize_restaurants()` — 11 edges; central to ingestion quality
+- `AppliedFilters` — 10 edges; bridges retrieval, LLM, and UI layers
+- `RecommendationQueryRequest` — 7 edges; the shared contract across phases
+- `GroqChatClient` — 7 edges; the LLM abstraction all ranking flows depend on
+
+**Surprising connection surfaced:**
+The deduplication strategy appears independently in three places — `docs/improvements.md` (design intent), `src/phase_2_retrieval/service_retrieval.py` (retrieval layer), and `src/phase_3_llm/prompts/system_v1.txt` (LLM prompt rule). These are not redundant: each layer guards against duplicates that the upstream layer may have missed. This three-layer defence is architecturally intentional but nowhere explicitly described as a system — the graph makes it visible.
+
+### Outputs
+
+| File | Purpose |
+| ---- | ------- |
+| `graphify-out/graph.html` | Interactive graph — open in any browser, no server needed |
+| `graphify-out/GRAPH_REPORT.md` | God nodes, surprising connections, suggested questions |
+| `graphify-out/graph.json` | Raw graph data for programmatic queries |
+
+### Keeping the graph current
+
+After adding or modifying source files:
+
+```bash
+/graphify . --update   # re-extracts only changed files, merges into existing graph
+```
+
+Code-only changes (`.py`, `.js`) are re-extracted via AST with no LLM cost. Doc or image changes trigger a semantic re-extraction pass.

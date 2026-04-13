@@ -48,6 +48,15 @@ AI-assisted restaurant discovery: users filter by city, budget, cuisine, rating,
 
 More detail: `docs/project_handoff.md`, `docs/architecture.md`.
 
+## Codebase knowledge graph
+
+A persistent knowledge graph lives in `graphify-out/` (357 nodes · 480 edges · 50 communities).  
+Open `graphify-out/graph.html` in any browser for an interactive view, or read `graphify-out/GRAPH_REPORT.md` for god nodes, surprising connections, and suggested questions.
+
+Workflow rule: before architecture-impacting changes or broad refactors, review `graphify-out/GRAPH_REPORT.md` first and use it to scope blast radius.
+
+After modifying files, run `/graphify . --update` to keep the graph current.
+
 ## Quickstart (local)
 
 1. Create and activate a virtual environment.

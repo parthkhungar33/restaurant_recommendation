@@ -601,3 +601,43 @@ Keep entries concise, factual, and diff-oriented so regressions and fixes remain
   - Recommendation cards now retain a stable visual on mobile even under external image failures.
 - **Improvement**
   - Increased production resilience for mobile clients without adding new static assets or backend dependencies.
+
+---
+
+## Step 22 - Knowledge graph (graphify)
+
+- **Did**
+  - Ran `/graphify .` on the full codebase to build a persistent knowledge graph.
+  - Extracted 357 nodes and 480 edges across 62 files (49 code, 11 docs, 4 UI screenshots).
+  - AST extraction covered all Python and JS source; semantic subagents extracted concepts, rationale, and design decisions from docs and images in parallel.
+  - Detected 50 communities and labeled them (e.g. Architecture Phase Pipeline, LLM Ranking Service, Design System & UI Integration, Data Processing & Deduplication).
+  - Generated three outputs in `graphify-out/`:
+    - `graph.html` — interactive browsable graph, open in any browser
+    - `GRAPH_REPORT.md` — god nodes, surprising connections, suggested questions
+    - `graph.json` — raw graph data for future queries
+- **Failed/Issue**
+  - Windows `cp1252` encoding blocked report generation on first attempt (Unicode arrow characters in report text); fixed by passing `encoding='utf-8'` to all write calls.
+- **Success**
+  - Graph built and all outputs generated cleanly.
+  - 69.2x token reduction for codebase queries (average query needs ~1,834 tokens instead of reading all 126,968 corpus tokens).
+  - Key god nodes identified: `normalize_restaurants()`, `AppliedFilters`, `RecommendationQueryRequest`, `GroqChatClient`, `buildResultCard()`.
+  - Surprising cross-file connection surfaced: the three-layer dedup strategy (`docs/improvements.md` DB-level, `service_retrieval.py` retrieval-level, `system_v1.txt` LLM-prompt-level) is architecturally consistent but independently documented in three places — a non-obvious coupling now visible in the graph.
+- **Improvement**
+  - Future codebase questions (architecture, data flow, where a concept lives) can be answered via `/graphify query "<question>"` against the persistent graph instead of re-reading all files.
+  - Run `/graphify . --update` after adding new files to keep the graph current without full re-extraction.
+
+---
+
+## Step 23 - Persist Graphify-first workflow guidance
+
+- **Did**
+  - Added a durable workflow rule to `README.md` under "Codebase knowledge graph":
+    - review `graphify-out/GRAPH_REPORT.md` before architecture-impacting changes or broad refactors.
+  - Added matching onboarding guidance in `docs/project_handoff.md` ("Codebase map for onboarding"):
+    - use Graphify first for cross-module refactors, API contract shifts, and dependency rewires.
+- **Failed/Issue**
+  - No blocking issue.
+- **Success**
+  - Graphify usage guidance is now documented in both the primary developer read path (`README.md`) and handoff documentation (`docs/project_handoff.md`).
+- **Improvement**
+  - Reduces future context-loss across sessions and aligns contributors on a consistent impact-analysis workflow before major changes.
