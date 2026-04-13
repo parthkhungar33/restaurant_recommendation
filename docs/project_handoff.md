@@ -497,7 +497,9 @@ Important environment values:
 - Hard refresh browser (`Ctrl+F5`) to clear stale URL cache
 - Confirm frontend is running the latest `web/src/main.js`
 - Check browser console/network for blocked image hosts
-- Verify fallback behavior triggers on image load error
+- Mobile/webview note: some in-app browsers can block or throttle external CDN image hosts; this can cause blank cards even when API data is correct
+- Current fallback chain: primary external image -> secondary external fallback -> inline SVG placeholder (final in-app fallback)
+- Verify fallback behavior triggers on image load error; if placeholders appear, the recommendation flow is healthy and only remote image delivery is degraded
 
 ### "Database not found" error
 - Run `python scripts/ingest_restaurants.py`
