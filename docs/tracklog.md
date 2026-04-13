@@ -583,3 +583,21 @@ Keep entries concise, factual, and diff-oriented so regressions and fixes remain
 - **Improvement**
   - Reduced visual noise and removed non-working affordances, improving trust and clarity.
   - Established a cleaner responsive baseline for future UI enhancements without separate mobile-only hacks.
+
+---
+
+## Step 21 - Mobile recommendation-image reliability fix
+
+- **Did**
+  - Updated `web/src/main.js` image rendering in recommendation cards to add a two-stage fallback:
+    - first fallback remains an alternate web image URL
+    - final fallback is now an inline SVG placeholder (`data:image/svg+xml`) generated at runtime.
+  - Added `inlineCardPlaceholder()` helper so cards always show a visual block even when third-party image hosts fail on mobile/webview builds.
+  - Adjusted image error handler logic to retry once on web fallback, then switch to inline placeholder.
+- **Failed/Issue**
+  - Mobile builds could show blank recommendation images when external image/CDN URLs failed or were blocked.
+- **Success**
+  - `npm run build` in `web/` passes after fallback update.
+  - Recommendation cards now retain a stable visual on mobile even under external image failures.
+- **Improvement**
+  - Increased production resilience for mobile clients without adding new static assets or backend dependencies.

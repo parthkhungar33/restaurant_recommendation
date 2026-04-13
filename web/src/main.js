@@ -235,6 +235,26 @@ function fallbackCardImageUrl(seed) {
   return fallbackPool[s % fallbackPool.length];
 }
 
+function inlineCardPlaceholder(title, subtitle = "Restaurant pick") {
+  const label = escapeHtml(title || "Restaurant");
+  const sub = escapeHtml(subtitle || "Restaurant pick");
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFF0F2"/>
+      <stop offset="100%" stop-color="#FFE4E6"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="720" fill="url(#bg)"/>
+  <circle cx="1020" cy="120" r="140" fill="#FDA4AF" fill-opacity="0.35"/>
+  <circle cx="160" cy="600" r="180" fill="#FB7185" fill-opacity="0.25"/>
+  <text x="90" y="300" fill="#BE123C" font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif" font-size="36" font-weight="700">Curated dining pick</text>
+  <text x="90" y="360" fill="#881337" font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif" font-size="56" font-weight="800">${label}</text>
+  <text x="90" y="420" fill="#9F1239" font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif" font-size="30">${sub}</text>
+</svg>`;
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
 function cuisineIconName(label) {
   return CUISINE_ICONS[label] || "restaurant_menu";
 }
@@ -635,14 +655,15 @@ function resultLayoutVariant(index) {
 }
 
 function buildResultCard(item, data, index) {
+  const cuisineFirst = (item.cuisine || "Cuisine").split(",")[0].trim();
   const imgUrl = cardImageUrl(
     item.restaurant_id,
     item.cuisine,
     data.applied_filters?.location || "",
   );
+  const placeholderImage = inlineCardPlaceholder(item.restaurant_name, cuisineFirst || "Restaurant pick");
   const ratingLabel = item.rating != null ? String(item.rating) : "\u2014";
   const loc = data.applied_filters?.location || "";
-  const cuisineFirst = (item.cuisine || "Cuisine").split(",")[0].trim();
   const tagline = `${cuisineFirst.toUpperCase()} \u2022 ${loc.toUpperCase()}`;
   const costLine = item.estimated_cost != null ? `\u20B9${formatInr(item.estimated_cost)} for two` : "Cost n/a";
   const tier = costTierLabel(item.estimated_cost);
@@ -775,12 +796,18 @@ function buildResultCard(item, data, index) {
   });
   const cardImg = wrap.querySelector("img");
   if (cardImg) {
+    const webFallback = fallbackCardImageUrl(`${item.restaurant_id}-fallback`);
+    let attemptedWebFallback = false;
     cardImg.addEventListener(
       "error",
       () => {
-        cardImg.src = fallbackCardImageUrl(`${item.restaurant_id}-fallback`);
+        if (!attemptedWebFallback) {
+          attemptedWebFallback = true;
+          cardImg.src = webFallback;
+          return;
+        }
+        cardImg.src = placeholderImage;
       },
-      { once: true },
     );
   }
   wrap.querySelector(".js-similar")?.addEventListener("click", () => {

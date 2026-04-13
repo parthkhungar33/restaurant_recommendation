@@ -8,6 +8,7 @@ AI-assisted restaurant discovery: users filter by city, budget, cuisine, rating,
 - Removed non-functional UI elements (profile button, fake discover strip, mobile bottom nav) to keep the experience clean and consistent.
 - Removed the voice/mic affordance from preferences and simplified the input UI.
 - Tightened mobile spacing, typography, card layouts, and grid behavior; added `overflow-x-hidden` to reduce narrow-screen overflow.
+- Hardened recommendation card image loading on mobile with a final inline SVG placeholder fallback when external image URLs fail.
 - Build verified after the UI updates: `cd web && npm run build`.
 
 ## Tech stack
